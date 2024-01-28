@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script type="module">
+      // task1
+      const getData = async (URL) => {
+        const response = await fetch(URL);
+        const data = await response.json();
+        return data;
+      };
+      try {
+        const users = await getData(
+          "https://jsonplaceholder.typicode.com/users"
+        );
+        users.forEach((user) => {
+          console.log(user);
+          document
+            .querySelector("body")
+            .insertAdjacentHTML(
+              "beforeend",
+              `<p> UserID: ${user.id}, Name: ${user.name}, UserName: ${user.username}<p>`
+            );
+        });
+      } catch (error) {
+        console.log(error.message);
+      }
+      // task2
+      async function addDog() {
+        let dog = await getData("https://dog.ceo/api/breeds/image/random");
+        document.querySelector("body").insertAdjacentHTML(
+          "beforeend",
+          `
+        	<figure>
+        		<img src="${dog.message}" />
+        	</figure>
+        `
+        );
+      }
+      try {
+        const delay = setInterval(addDog, 3000);
+        setTimeout(() => {
+          clearInterval(delay);
+        }, 30000);
+      } catch (error) {
+        console.log(error.message);
+      }
+    </script>
+  </body>
+</html>
